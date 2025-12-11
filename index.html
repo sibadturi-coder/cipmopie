@@ -139,8 +139,9 @@
   </div>
 
   <script>
-    const API_KEY = "eb1bfedba1baf5d2fd0326e1048c1cd8";
-    const movieId = new URLSearchParams(window.location.search).get("watch_id");
+    const API_KEY = "3ed72f657ce5c5779383b2191d6d0111";
+    const pathArray = window.location.pathname.split('/');
+    const movieId = pathArray[pathArray.length - 1];
 
     const posterImage = document.getElementById("poster-image");
     const movieTitle = document.getElementById("movie-title");
@@ -182,3 +183,4 @@
 </body>
 
 </html>
+
