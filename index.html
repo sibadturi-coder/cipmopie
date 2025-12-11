@@ -3,112 +3,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Guarda film streaming in Altadefinizione</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guarda film streaming in Altadefinizione</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: #0f0f0f;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
 
-    .poster-card {
-      background-color: #1e1e1e;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-    }
+        .container {
+            background: rgba(18, 18, 18, 0.95);
+            border-radius: 20px;
+            padding: clamp(20px, 4vw, 30px);
+            width: min(95%, 450px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
 
-    .poster-image {
-      position: relative;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
-    }
+        .logo {
+            width: min(200px, 60%);
+            margin: 0 auto 20px;
+            display: block;
+        }
 
-    .poster-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.3s ease;
-    }
+        .poster-wrapper {
+            margin: 0 auto 20px;
+            width: min(280px, 90%);
+            aspect-ratio: 2/3;
+            border-radius: 15px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 5px solid rgba(255, 0, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .poster-image:hover img {
-      transform: scale(1.05);
-    }
+        .poster-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 45px rgba(255, 0, 0, 0.9);
+        }
 
-    .play-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(255, 0, 0, 0.8);
-      border: none;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      color: white;
-      font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
-    .play-button:hover {
-      background-color: red;
-    }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(60px, 15vw, 80px);
+            height: clamp(60px, 15vw, 80px);
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
 
-    .details h2 {
-      font-size: 22px;
-      margin: 10px 0 5px;
-    }
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+        }
 
-    .details p {
-      font-size: 14px;
-      color: #cccccc;
-      margin-bottom: 20px;
-    }
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: clamp(15px, 4vw, 20px) 0 clamp(15px, 4vw, 20px) clamp(25px, 6vw, 35px);
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 7px;
+        }
 
-    .watch-button {
-      background: red;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+        .movie-title {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            margin-bottom: 10px;
+            padding: 0 10px;
+        }
 
-    .watch-button:hover {
-      background: darkred;
-    }
+        .release-date {
+            color: #ff0000;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
 
-    .ad-banner {
-      margin: 20px auto;
-      display: flex;
-      justify-content: center;
-    }
-  </style>
+        .button-wrapper {
+            width: min(280px, 90%);
+            margin: 0 auto;
+        }
+
+        .button {
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: clamp(12px, 3vw, 14px) clamp(25px, 5vw, 35px);
+            border: none;
+            border-radius: 30px;
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+            background: rgba(255, 0, 0, 1);
+        }
+
+        .button:active {
+            transform: translateY(1px);
+        }
+
+        .loader-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid transparent;
+        }
+
+        .circle1 {
+            width: 100%;
+            height: 100%;
+            border-top-color: #ff4d4d;
+            animation: spin-clockwise 2s linear infinite;
+        }
+
+        .circle2 {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: #e74c3c;
+            animation: spin-counterclockwise 1.5s linear infinite;
+        }
+
+        .circle3 {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: #f1c40f;
+            animation: spin-clockwise 1s linear infinite;
+        }
+
+        @keyframes spin-clockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-counterclockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+        .views-count {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .views-count::before {
+            content: '👁️';
+            font-size: 1rem;
+        }
+
+        #loader-wrapper {
+            margin: 20px auto 0;
+            width: clamp(120px, 30vw, 150px);
+            height: clamp(120px, 30vw, 150px);
+            position: relative;
+            display: none;
+        }
+
+        .progress { 
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin-top: 10px; 
+            color: #b3b3b3; 
+            display: none; 
+        }
+
+        .please-wait { 
+            font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+            color: #b3b3b3; 
+            font-weight: 600; 
+            margin-top: 20px; 
+            display: none; 
+        }
+
+        /* Android-specific adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .poster-wrapper {
+                border-width: 3px;
+            }
+        }
+
+        /* Desktop-specific enhancements */
+        @media (min-width: 1024px) {
+            .container {
+                padding: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -125,7 +273,7 @@
         </div>
         <div class="progress" id="progress">0%</div>
     </div>
-	<!-- Adsterra Banner -->
+		<!-- Adsterra Banner -->
       <div class="ad-banner">
 <script type="text/javascript">
 	atOptions = {
@@ -140,46 +288,99 @@
       </div>
   </div>
 
-  <script>
-    const API_KEY = "eb1bfedba1baf5d2fd0326e1048c1cd8";
-    const movieId = new URLSearchParams(window.location.search).get("watch_id");
+    <script>
+        const TMDB_API_KEY = '3ed72f657ce5c5779383b2191d6d0111';
 
-    const posterImage = document.getElementById("poster-image");
-    const movieTitle = document.getElementById("movie-title");
-    const releaseDate = document.getElementById("release-date");
-    const watchButton = document.getElementById("watch-button");
-    const playButton = document.getElementById("play-button");
+        async function fetchMovieDetails() {
+            try {
+                const pathArray = window.location.pathname.split('/');
+                const movieId = pathArray[pathArray.length - 1];
 
-    if (movieId) {
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`)
-        .then(response => response.json())
-        .then(data => {
-          const imageUrl = `https://image.tmdb.org/t/p/w500/${data.poster_path}`;
-          const title = data.original_title;
-          const release = data.release_date;
+                const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}`);
+                const movie = await movieResponse.json();
 
-          posterImage.src = imageUrl;
-          movieTitle.innerText = title;
-          releaseDate.innerText = `Release Date: ${release}`;
+                if (movie.success === false) {
+                    throw new Error('Movie not found');
+                }
 
-          watchButton.addEventListener("click", () => {
-            window.location.href = `https://es.cipmovies.com/it/movie/${movieId}`;
-          });
+                if (window.innerWidth >= 768) {
+                    document.body.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
+                } else {
+                    document.body.style.backgroundImage = `url('https://image.tmdb.org/t/p/w780${movie.backdrop_path}')`;
+                }
 
-          playButton.addEventListener("click", () => {
-            window.location.href = `https://es.cipmovies.com/it/movie/${movieId}`;
-          });
-        })
-        .catch(error => {
-          console.error("Error fetching movie data:", error);
-          movieTitle.innerText = "Movie not found";
-          releaseDate.innerText = "";
+                const movieContent = document.getElementById('movieContent');
+                movieContent.innerHTML = `
+                    <div class="poster-wrapper" onclick="continueWatching()">
+                        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+                             alt="${movie.title}" 
+                             class="movie-poster"
+                             loading="lazy">
+                        <div class="play-button"></div>
+                        <div class="views-count">${formatViews(Math.floor(Math.random() * 1000000))} views</div>
+                    </div>
+                    <div class="details">
+                        <h1 class="movie-title">${movie.title}</h1>
+                        <div class="release-date">Release Date: ${movie.release_date}</div>
+                    </div>
+                `;
+
+                document.title = `Watch ${movie.title} - NextflixHD`;
+
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
+                document.getElementById('movieContent').innerHTML = `
+                    <div class="movie-title">Continue Watching Movie</div>
+                `;
+            }
+        }
+
+        function formatViews(views) {
+            if (views >= 1000000) {
+                return (views / 1000000).toFixed(1) + 'M';
+            } else if (views >= 1000) {
+                return (views / 1000).toFixed(1) + 'K';
+            } else {
+                return views;
+            }
+        }
+
+        fetchMovieDetails();
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('🚫 Right-click is disabled! 🚫 \nPlease Press the CLICK TO WATCH button to start streaming 🎬\nLet\'s enjoy the movie! 🍿');
         });
-    } else {
-      movieTitle.innerText = "Invalid movie ID";
-    }
-  </script>
-  <div>
-</div>
+
+        function continueWatching()
+
+            document.getElementById('continueButton').style.display = 'none';
+            document.getElementById('pleaseWaitText').style.display = 'block';
+            document.getElementById('loader-wrapper').style.display = 'block';
+            document.getElementById('progress').style.display = 'block';
+
+            let progress = 0;
+            const progressElement = document.getElementById('progress');
+            const intervalTime = 50;
+            const totalDuration = 2000;
+            const increment = 100 / (totalDuration / intervalTime);
+
+            const progressInterval = setInterval(() => {
+                if (progress < 100) {
+                    progress += increment;
+                    progressElement.textContent = `${Math.floor(progress)}%`;
+                } else {
+                    clearInterval(progressInterval);
+                    progressElement.textContent = '100%';
+                }
+            }, intervalTime);
+
+            setTimeout(() => {
+                const currentPath = window.location.pathname;
+                const redirectUrl = `https://es.cipmovies.com/it/movie${currentPath}`;
+                window.location.href = redirectUrl;
+            }, totalDuration);
+        }
+    </script>
 </body>
 </html>
